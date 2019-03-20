@@ -10,7 +10,11 @@
 
 int main(void)
 {
-    // Your code here    
-
+    int pid = fork();
+    // creating a null terminated array of char pointers
+    char *myargs[] = {"/bin/ls", NULL};
+    // running `/bin/ls`
+    execv(myargs[0], myargs);
+    
     return 0;
 }
