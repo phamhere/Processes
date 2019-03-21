@@ -16,7 +16,36 @@ char* msg3 = "hello world #3";
 
 int main(void)
 {
-    // Your code here
+    // creating a buffer that will hold the incoming data that is being written
+    char inbuf[MSGSIZE];
+    // a two-element array to hold the read and write file descriptors that are used by the pipe
+    int p[2];
+    // establish our pipe, passing it thep array so that it gets populated by the read and write file descriptors 
+    if (pipe(p) < 0) {
+        fprintf(stderr, "pipe failed\n");
+        exit(1);
+    }
+
+    int pid = fork();
+
+    if (pid == 0)
+    {
+        // write 16 bytes of data to the write file descriptor
+        write(p[1], msg1, MSGSIZE);
+        write(p[1], msg2, MSGSIZE);
+        write(p[1], msg3, MSGSIZE);
+    }
+    else
+    {
+        // waiting for child process to finish running
+        waitpid(pid, NULL, 0);
+        for (int i = 0; i < 3; i++) 
+        {
+            //read and print 16 bytes of data from the read file descriptor
+            read(p[0], inbuf, MSGSIZE);
+            printf("%s\n", inbuf);
+        }
+    }
     
     return 0;
 }

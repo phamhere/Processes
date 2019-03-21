@@ -8,7 +8,17 @@
 
 int main(void)
 {
-    // Your code here 
+    // opening text.txt with write permissions and saving it to a file_pointer variable
+    FILE *file_pointer = fopen("text.txt", "w");
+    int pid = fork();
+
+    // if child process write something, if parent process write another thing
+    if (pid == 0)
+        fprintf(file_pointer, "%s", "Child process wrote this.\n");
+    else
+        fprintf(file_pointer, "%s", "Parent process wrote this.\n");
+    // close file
+    fclose(file_pointer);
     
     return 0;
 }

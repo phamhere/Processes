@@ -9,7 +9,17 @@
 
 int main(void)
 {
-    // Your code here
+    int pid = fork();
+
+    // if child process print hello, otherwise print goodbye
+    if (pid == 0)
+        printf("hello\n");
+    else
+    {
+        // wait for child process to end before printing goodbye
+        waitpid(pid, NULL, 0);
+        printf("goodbye\n");
+    }
 
     return 0;
 }

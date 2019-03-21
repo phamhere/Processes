@@ -8,7 +8,17 @@
 
 int main(void)
 {
-    // Your code here
+    int x = 1;
+    int pid = fork();
+
+    // if child process, increment, otherwise decrement
+    if (pid == 0)
+        x++;
+    else
+        x--;
+
+    // print out pid and value of x
+    printf("%d: x = %d\n", pid, x);
 
     return 0;
 }
