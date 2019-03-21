@@ -20,7 +20,26 @@ and `clock_gettime()` should work just fine.
 
 int main()
 {
-    // Your code here
+    // initiating variables to hold later data
+    struct timespec start, end;
+    long sum = 0;
+    double avg;
+
+    // iterating number_iter times
+    for (int i = 0; i < number_iter; i++) {
+        // getting start time and saving to &start; using CLOCK_MONOTONIC since figuring out elapsed time
+        clock_gettime(CLOCK_MONOTONIC, &start);
+        // making an empty write to stdout
+        write(fileno(stdout), NULL, 0);
+        // getting end time
+        clock_gettime(CLOCK_MONOTONIC, &end);
+        // adding the to sum time difference; multiplying by a billion since converting sec to nanosec
+        sum += BILLION * (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec);
+    }
+    // averaging sum in nanoseconds
+    avg = sum / (float) number_iter;
+
+    printf("Average time to make a system call an empty write to stdout is: %f ns.\n", avg);
     
     return 0;
 }
